@@ -1,0 +1,128 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths = (async () => {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}) satisfies GetStaticPaths;
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title={data.title} description={data.summary}>
+  <article class="py-24">
+    <div class="mx-auto max-w-[820px] px-5 sm:px-8">
+      <a
+        href={`${base}/work`}
+        class="mb-12 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
+      >
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M11 18l-6-6 6-6"></path>
+        </svg>
+        All work
+      </a>
+
+      <p class="mb-4 text-[13px] font-medium tracking-[0.02em] text-navy-500">
+        {data.role} · {data.year}
+      </p>
+      <h1 class="mb-6 font-display text-[length:var(--text-h2)] font-medium leading-[1.05] tracking-[-0.01em] text-navy-950">
+        {data.title}
+      </h1>
+      <p class="mb-6 max-w-[62ch] text-lg leading-relaxed text-muted">{data.summary}</p>
+
+      <div class="mb-6 flex flex-wrap gap-3">
+        {
+          data.tags.map((tag) => (
+            <span class="rounded-[2px] border border-line-strong px-2.5 py-1 text-[11px] uppercase tracking-[0.04em] text-navy-500">
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+
+      {
+        (data.liveUrl || data.repoUrl) && (
+          <div class="mb-12 flex flex-wrap gap-6 border-y border-line py-4 text-sm">
+            {data.liveUrl && (
+              <a
+                href={data.liveUrl}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1.5 font-medium text-navy-900 transition-opacity hover:opacity-70"
+              >
+                Live site
+                <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7M17 7H8M17 7V16" />
+                </svg>
+              </a>
+            )}
+            {data.repoUrl && (
+              <a
+                href={data.repoUrl}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1.5 font-medium text-navy-900 transition-opacity hover:opacity-70"
+              >
+                Repository
+                <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7M17 7H8M17 7V16" />
+                </svg>
+              </a>
+            )}
+          </div>
+        )
+      }
+
+      <div class="prose-case">
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  /* Case-study body typography — scoped, follows the design tokens. */
+  .prose-case :global(h2) {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    color: var(--color-navy-950);
+    margin: 2.5rem 0 0.75rem;
+  }
+  .prose-case :global(p) {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-muted);
+    margin: 0 0 1rem;
+    max-width: 65ch;
+  }
+  .prose-case :global(ul) {
+    margin: 0 0 1rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .prose-case :global(li) {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-muted);
+    margin-bottom: 0.4rem;
+  }
+  .prose-case :global(strong) {
+    color: var(--color-navy-900);
+    font-weight: 600;
+  }
+  .prose-case :global(a) {
+    color: var(--color-navy-500);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

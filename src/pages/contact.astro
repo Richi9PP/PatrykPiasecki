@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT } from '../consts';
+
+// Static site (GitHub Pages) — no backend. Contact is direct: mailto + profiles.
+const channels = [
+  {
+    label: 'Email',
+    value: CONTACT.email,
+    href: `mailto:${CONTACT.email}`,
+    note: 'Best for anything specific — I read everything.',
+  },
+  {
+    label: 'LinkedIn',
+    value: 'in/patryk-piasecki',
+    href: CONTACT.linkedin,
+    note: 'Roles, referrals, and the usual professional back-and-forth.',
+  },
+  {
+    label: 'GitHub',
+    value: 'github.com/patrykpiasecki',
+    href: CONTACT.github,
+    note: 'Code, commit history, and the projects behind the case studies.',
+  },
+];
+---
+
+<BaseLayout title="Contact" description="Get in touch with Patryk Piasecki — email, LinkedIn, GitHub.">
+  <section class="py-24">
+    <div class="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-16">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
+        <div>
+          <p class="mb-3 text-[13px] font-medium tracking-[0.02em] text-navy-500">Contact</p>
+          <h1 class="mb-6 font-display text-[length:var(--text-h2)] font-medium leading-[1.08] tracking-[-0.01em] text-navy-950">
+            Let's talk.
+          </h1>
+          <p class="max-w-[42ch] text-[15px] leading-relaxed text-muted">
+            Looking for a Data Scientist / ML Specialist, or want to talk about a
+            project? The fastest way to reach me is email — or pick whichever
+            channel you prefer.
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          {
+            channels.map((c) => (
+              <a
+                href={c.href}
+                target={c.href.startsWith('http') ? '_blank' : undefined}
+                rel={c.href.startsWith('http') ? 'noopener' : undefined}
+                class="group grid grid-cols-1 gap-2 border-t border-line py-8 transition-colors last:border-b hover:bg-surface-alt sm:grid-cols-[140px_1fr] sm:items-center sm:gap-8"
+              >
+                <span class="text-xs uppercase tracking-[0.08em] text-faint">{c.label}</span>
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <div class="font-display text-[length:var(--text-h3)] font-medium text-navy-950">
+                      {c.value}
+                    </div>
+                    <div class="mt-1 text-sm text-muted">{c.note}</div>
+                  </div>
+                  <svg
+                    class="h-4 w-4 shrink-0 text-line-strong transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-navy-950"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M7 17L17 7M17 7H8M17 7V16" />
+                  </svg>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

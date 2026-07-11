@@ -1,0 +1,25 @@
+# build output
+dist/
+.output/
+
+# dependencies
+node_modules/
+
+# astro
+.astro/
+
+# generated / local
+*.local
+.env
+.env.*
+!.env.example
+
+# os / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# python / tooling scratch used to prepare assets
+__pycache__/
+.venv/
