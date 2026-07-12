@@ -1,25 +1,25 @@
 ---
 title: CN Invest Group — Landing Page
-order: 3
+order: 2
 summary: A client-facing landing page for a property-management firm, shipped to a live domain, including a mid-flight hosting and backend migration.
 tags: ['Tailwind', 'PHP', 'Freelance']
 metric: 'Live on cninvestgroup.com.pl · zero-downtime migration'
-role: 'Freelance — client work'
+role: 'Freelance, client work'
 year: '2025'
 liveUrl: 'https://cninvestgroup.com.pl'
 ---
 
 ## Problem
 
-CN INVEST GROUP (property management, Pułtusk) needed a credible landing page on their own domain, with a working contact form — and partway through, the hosting had to change, which meant moving the form's backend without breaking anything for the client.
+CN INVEST GROUP (property management, Pułtusk) had an old WordPress site on home.pl and needed a credible, custom-built landing page with a working contact form. The client wanted to keep hosting on home.pl rather than move to a Linux server, which meant the contact backend had to run on a shared PHP host.
 
 ## Solution
 
-A hand-built landing page in Tailwind CSS and vanilla JS. The contact backend started on Python/Resend/Render and was migrated to PHP/PHPMailer on home.pl to fit the new hosting. I documented the whole migration in `FTP_DEPLOY.md` so the deploy is reproducible rather than tribal knowledge.
+A hand-built landing page in Tailwind CSS and vanilla JS, replacing the old WordPress build. I first implemented the contact backend with my usual stack (Python/Resend/Render), then migrated it to PHP/PHPMailer to run natively on home.pl's shared hosting. The entire migration process was documented so the client and any developer who works on the project later can understand and maintain it without guesswork.
 
 ## Stack
 
-Tailwind CSS, vanilla JavaScript, PHP, PHPMailer, home.pl hosting (migrated from Python/Resend/Render).
+Tailwind CSS, vanilla JavaScript, PHP, PHPMailer, home.pl hosting.
 
 ## Outcome
 

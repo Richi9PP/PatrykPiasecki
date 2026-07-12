@@ -3,13 +3,13 @@ import { SITE } from '../consts';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<section class="relative grid min-h-[calc(100vh-90px)] grid-cols-[28px_1fr] overflow-hidden">
+<section class="relative grid min-h-[calc(100vh-90px)] grid-cols-1 overflow-hidden md:grid-cols-[28px_1fr]">
   <!-- vertical rail label -->
   <div class="hidden items-end justify-center py-12 md:flex">
     <span
-      class="whitespace-nowrap text-xs uppercase tracking-[0.14em] text-faint [writing-mode:vertical-rl] rotate-180"
+      class="whitespace-nowrap text-xs uppercase tracking-[0.12em] text-faint [writing-mode:vertical-rl] rotate-180"
     >
-      {SITE.role} — {SITE.location.split(',')[0]}
+      {SITE.role} · {SITE.location.split(',')[0]}
     </span>
   </div>
 
@@ -24,18 +24,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <!-- copy -->
       <div class="relative z-20">
-        <h1 class="mb-6 font-display text-[length:var(--text-hero)] font-medium leading-[0.98] tracking-[-0.02em] text-navy-950">
-          Data, made<br /><em class="not-italic italic text-navy-500">decidable.</em>
+        <h1
+          data-reveal
+          style="--reveal-delay: 0ms"
+          class="mb-6 font-display text-[length:var(--text-hero)] font-medium leading-[0.98] tracking-[-0.02em] text-navy-950"
+        >
+          Data, made<br /><em class="italic text-navy-500">decidable.</em>
         </h1>
-        <p class="mb-8 max-w-[46ch] text-base leading-relaxed text-muted sm:text-lg">
-          I build machine learning models and the full-stack systems that put
-          them to work — from a 95.6% accuracy classifier to a live photo
-          pipeline running at corporate events for PGE Narodowy and TVN.
+        <p
+          data-reveal
+          style="--reveal-delay: 110ms"
+          class="mb-8 max-w-[46ch] text-base leading-relaxed text-muted sm:text-lg"
+        >
+          I build models I can defend, and the systems that put them to work:
+          carefully validated classifiers, production client sites, and finance
+          workflows automated at Warner Bros. Discovery.
         </p>
-        <div class="flex items-center gap-8">
+        <div data-reveal style="--reveal-delay: 200ms" class="flex flex-wrap items-center gap-x-8 gap-y-4">
           <a
             href={`${base}/work`}
-            class="inline-flex items-center gap-2 rounded-[2px] bg-navy-950 px-[22px] py-[13px] text-sm font-medium text-surface transition-colors hover:bg-navy-700"
+            class="inline-flex items-center gap-2 rounded-[2px] bg-navy-950 px-[22px] py-[13px] text-sm font-medium text-surface transition-[background-color,transform] duration-200 ease-out-strong hover:bg-navy-700 active:scale-[0.97]"
           >
             View selected work
             <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -52,15 +60,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
 
       <!-- portrait -->
-      <div class="relative z-10 -mt-12 -ml-12 justify-self-end self-end w-full max-w-[440px]">
+      <div
+        data-reveal
+        style="--reveal-delay: 140ms"
+        class="relative z-10 mt-8 w-full max-w-[300px] justify-self-center self-end sm:max-w-[380px] md:-mt-12 md:-ml-12 md:max-w-[440px] md:justify-self-end"
+      >
         <p
-          class="greeting-halo absolute top-[55%] left-[-22%] z-40 m-0 whitespace-nowrap font-display text-[clamp(23px,2.5vw,31px)] font-medium italic leading-tight tracking-[-0.01em] text-navy-950"
+          class="greeting-halo absolute top-[55%] left-[2%] z-40 m-0 whitespace-nowrap font-display text-[clamp(23px,2.5vw,31px)] font-medium italic leading-tight tracking-[-0.01em] text-navy-950 md:left-[-22%]"
         >
           Hi, I'm <strong class="font-semibold not-italic text-navy-500">Patryk</strong>
         </p>
 
         <div
-          class="hero-dotgrid absolute right-[-6%] bottom-[12%] z-20 h-[66px] w-[66px] opacity-50"
+          class="hero-dotgrid absolute right-0 bottom-[12%] z-20 h-[66px] w-[66px] opacity-50 md:right-[-6%]"
           aria-hidden="true"
         >
         </div>
@@ -75,7 +87,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         />
 
         <div
-          class="absolute bottom-[10%] left-[-10%] z-20 flex items-center gap-2 rounded-full border border-line-strong bg-surface px-4 py-2.5 pl-3 text-xs font-medium text-navy-900 shadow-[0_12px_28px_oklch(0.2_0.045_258/0.14)]"
+          class="absolute bottom-[10%] left-2 z-20 flex items-center gap-2 rounded-[2px] border border-line-strong bg-surface px-3.5 py-2.5 text-xs font-medium text-navy-900 shadow-[0_4px_12px_oklch(0.2_0.045_258/0.08)] md:left-[-10%]"
         >
           <span class="h-[7px] w-[7px] shrink-0 rounded-full bg-navy-500"></span>
           WBD — DTC Team
@@ -84,7 +96,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <div class="mx-auto flex max-w-[1240px] items-center justify-between border-t border-line px-5 py-6 text-xs tracking-[0.04em] text-faint sm:px-8 lg:px-16">
-      <span>{SITE.location} — {new Date().getFullYear()}</span>
+      <span>{SITE.location} · {new Date().getFullYear()}</span>
       <a href="#work" class="inline-flex items-center gap-2 transition-colors hover:text-ink">
         Scroll
         <svg class="scroll-cue-arrow h-[11px] w-[11px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

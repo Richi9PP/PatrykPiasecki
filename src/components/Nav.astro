@@ -31,13 +31,93 @@ const isActive = (href: string) =>
 
       <a
         href={`${base}/contact`}
-        class="inline-flex items-center gap-1.5 border-b border-navy-900 pb-0.5 text-sm font-medium text-navy-900 transition-opacity hover:opacity-70"
+        class="hidden items-center gap-1.5 border-b border-navy-900 pb-0.5 text-sm font-medium text-navy-900 transition-opacity hover:opacity-70 sm:inline-flex"
       >
         Let's talk
         <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M7 17L17 7M17 7H8M17 7V16"></path>
         </svg>
       </a>
+
+      <!-- mobile menu toggle -->
+      <button
+        id="menu-toggle"
+        type="button"
+        class="-mr-2 flex h-11 w-11 items-center justify-center text-navy-900 transition-transform duration-[160ms] ease-out-strong active:scale-[0.9] sm:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="relative block h-5 w-5">
+          <svg class="menu-open h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+          <svg class="menu-close h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <!-- mobile menu panel: grid-rows trick animates height without layout thrash -->
+    <div
+      id="mobile-menu"
+      class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-300 ease-out sm:hidden"
+    >
+      <nav class="min-h-0">
+        <ul class="flex flex-col divide-y divide-line border-b border-line">
+          {
+            NAV.map((item) => (
+              <li>
+                <a
+                  href={`${base}${item.href}`}
+                  class:list={[
+                    'flex items-center py-3.5 font-display text-lg text-navy-950 transition-colors',
+                    isActive(item.href) ? 'text-navy-500' : 'hover:text-navy-500',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a
+              href={`${base}/contact`}
+              class="flex items-center justify-between py-3.5 font-display text-lg font-medium text-navy-500"
+            >
+              Let's talk
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7M17 7H8M17 7V16"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  const setOpen = (open: boolean) => {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menu.classList.toggle('grid-rows-[1fr]', open);
+    menu.classList.toggle('grid-rows-[0fr]', !open);
+  };
+
+  toggle?.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  // Close on Escape for keyboard users
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+    }
+  });
+</script>

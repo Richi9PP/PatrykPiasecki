@@ -9,9 +9,10 @@ import { CONTACT } from '../consts';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+const allProjects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
 );
+const projects = allProjects.slice(0, 3);
 ---
 
 <BaseLayout>
@@ -19,12 +20,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 
   <StackStrip />
 
-  <section id="work" class="py-24">
+  <section id="work" class="py-16 sm:py-24">
     <div class="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-16">
       <SectionHead
         kicker="Selected work"
-        title="Three projects, three proofs."
-        desc="Each one is a complete case study — the problem, what I built, the stack, and the measured outcome."
+        title="Proof, not marketing."
+        desc="From credit-risk scorecards to shipped products. Each one is a complete case study: the problem, what I built, the stack, and the measured outcome."
       />
       <div class="flex flex-col">
         {
@@ -39,23 +40,34 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
           ))
         }
       </div>
+      <div data-reveal class="mt-10">
+        <a
+          href={`${base}/work`}
+          class="inline-flex items-center gap-2 border-b border-line-strong pb-0.5 text-sm font-medium text-ink transition-colors hover:border-ink"
+        >
+          See all {allProjects.length} projects
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 
   <section id="about" class="bg-navy-950 py-24 text-surface">
-    <div class="mx-auto grid max-w-[1240px] grid-cols-1 items-start gap-8 px-5 sm:px-8 md:grid-cols-[0.9fr_1.1fr] md:gap-20 lg:px-16">
-      <div>
+    <div class="mx-auto grid max-w-[1240px] grid-cols-1 items-start gap-6 px-5 sm:px-8 md:grid-cols-[0.9fr_1.1fr] md:gap-20 lg:px-16">
+      <div data-reveal>
         <p class="mb-3 text-[13px] font-medium tracking-[0.02em] text-navy-300">About</p>
         <h2 class="font-display text-[length:var(--text-h2)] font-medium leading-[1.08] tracking-[-0.01em] text-surface">
-          Corporate discipline,<br />freelance range.
+          Quant by training,<br />builder by habit.
         </h2>
       </div>
-      <div>
-        <p class="mb-6 max-w-[56ch] text-base leading-[1.7] text-[oklch(0.85_0.02_258)]">
-          I work on the DTC Team at Warner Bros. Discovery while finishing a
-          master's in Data Analysis at SGH Warsaw School of Economics. Outside
-          of that, I build and ship full-stack AI products — wiring LLMs, voice
-          APIs, and databases into things people actually use.
+      <div data-reveal style="--reveal-delay: 120ms">
+        <p class="mb-6 max-w-[56ch] text-base leading-[1.7] text-navy-100">
+          I work on the DTC team at Warner Bros. Discovery while finishing a
+          master's in Data Analysis at SGH Warsaw School of Economics. What I
+          care about is the last mile: turning an analysis into something that
+          runs, gets used, and actually changes a decision.
         </p>
         <a
           href={`${base}/about`}

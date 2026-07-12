@@ -12,12 +12,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 ---
 
 <BaseLayout title="Work" description="Selected data science and full-stack projects by Patryk Piasecki.">
-  <section class="py-24">
+  <section class="py-16 sm:py-24">
     <div class="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-16">
       <SectionHead
         kicker="Work"
         title="Selected projects."
-        desc="Machine learning, full-stack systems, and client work — presented as proof, not marketing."
+        desc="Credit risk, quant finance, machine learning, and shipped products — presented as proof, not marketing."
       />
       <div class="flex flex-col">
         {

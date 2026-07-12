@@ -4,49 +4,75 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const facts = [
-  { label: 'Currently', value: 'DTC Team @ Warner Bros. Discovery' },
-  { label: 'Studying', value: "MSc Data Analysis, SGH — grad. 2027" },
+  { label: 'Currently', value: 'Data & ML — DTC team, Warner Bros. Discovery' },
+  { label: 'Studying', value: 'MSc Data Analysis, SGH — grad. 2027' },
   { label: 'Based in', value: 'Warsaw, Poland' },
-  { label: 'Focus', value: 'ML models · full-stack AI products' },
+  { label: 'Languages', value: 'English C1 · German B1' },
+  { label: 'Focus', value: 'ML models + data products in production' },
 ];
 ---
 
-<BaseLayout title="About" description="Patryk Piasecki — Data Scientist at WBD, MSc Data Analysis at SGH, full-stack AI builder.">
-  <section class="py-24">
+<BaseLayout title="About" description="Patryk Piasecki — data scientist and builder in Warsaw. Quant training from SGH, shipping data products at Warner Bros. Discovery and for real clients.">
+  <section class="py-16 sm:py-24">
     <div class="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-16">
       <div class="grid grid-cols-1 gap-12 md:grid-cols-[1.15fr_0.85fr] md:gap-20">
         <div>
-          <p class="mb-3 text-[13px] font-medium tracking-[0.02em] text-navy-500">About</p>
-          <h1 class="mb-8 font-display text-[length:var(--text-h2)] font-medium leading-[1.08] tracking-[-0.01em] text-navy-950">
-            Corporate discipline,<br />freelance range.
+          <p data-reveal class="mb-3 text-[13px] font-medium tracking-[0.02em] text-navy-500">About</p>
+          <h1
+            data-reveal
+            style="--reveal-delay: 90ms"
+            class="mb-8 font-display text-[length:var(--text-h2)] font-medium leading-[1.08] tracking-[-0.01em] text-navy-950"
+          >
+            Quant by training,<br />builder by habit.
           </h1>
 
-          <div class="max-w-[62ch] space-y-5 text-[17px] leading-[1.75] text-muted">
+          <div data-reveal style="--reveal-delay: 180ms" class="max-w-[62ch] space-y-5 text-[17px] leading-[1.75] text-muted">
             <p>
-              I'm a Data Scientist based in Warsaw. By day I work on the DTC Team
-              at Warner Bros. Discovery; alongside that I'm finishing a master's
-              in Data Analysis at SGH Warsaw School of Economics, graduating in
-              2027.
+              I'm Patryk, a data person who likes to see things all the way
+              through. My training is quantitative, but I've never been content
+              to stop at a notebook. The part I care about is the last mile:
+              turning an analysis into something that runs, gets used, and
+              actually changes a decision. That instinct, pairing the rigor of
+              data science with the messiness of real business, is the thread
+              through everything here.
             </p>
             <p>
-              My work sits where machine learning meets shipping. I've trained
-              classifiers with rigorous validation for academic projects, and
-              I've built and deployed full-stack systems that run in production
-              for real corporate clients — including a live photo pipeline used
-              at events for PGE Narodowy and TVN.
+              I studied Quantitative Methods in Economics and Information Systems
+              at SGH Warsaw School of Economics, where I'm now finishing a
+              master's in Data Analysis, graduating in 2027. A semester on
+              Erasmus at MCI Innsbruck got me hooked on working across borders,
+              and consulting sharpened the business side. I interned at KPMG and
+              helped lead one of Poland's largest consulting fairs, alongside
+              partners like Deloitte, Mastercard and KPMG. My bachelor's thesis,
+              a logistic-regression model in Python for type-2 diabetes risk, is
+              where statistics and real stakes first came together for me.
             </p>
             <p>
-              What I'm most interested in is full-stack AI product development:
-              combining LLMs, voice APIs, and databases into working
-              applications. I like the whole arc — from the model to the moment
-              a person actually uses the thing.
+              Since then I've built the habit of shipping. I've designed and
+              deployed production websites for real clients (a property-management
+              firm and an events company) with working, email-integrated forms,
+              not just mockups. At Warner Bros. Discovery, on the DTC team, I
+              wrote Python that automates invoice-review and SAP reconciliation
+              end to end, taking hours of manual checking out of the cycle. And I
+              keep the modelling sharp alongside it: A/B testing, survival
+              analysis, and classifiers validated properly, cross-validated so
+              the numbers I report are ones I can stand behind, not just quote.
+            </p>
+            <p>
+              What I'm really after is the whole arc: a clean question, a model I
+              trust, and a product someone relies on. I do my best work in
+              international, fast-moving teams where data has to earn its keep.
+              Away from the screen, I'm usually on a board or in the mountains —
+              snowboarding, kitesurfing, or hiking somewhere with bad reception.
+              If you're building at the intersection of data and product, I'd
+              love to talk.
             </p>
           </div>
 
           <div class="mt-10 flex flex-wrap gap-6 text-sm">
             <a
               href={`${base}/work`}
-              class="inline-flex items-center gap-2 rounded-[2px] bg-navy-950 px-[22px] py-[13px] font-medium text-surface transition-colors hover:bg-navy-700"
+              class="inline-flex items-center gap-2 rounded-[2px] bg-navy-950 px-[22px] py-[13px] font-medium text-surface transition-[background-color,transform] duration-200 ease-out-strong hover:bg-navy-700 active:scale-[0.97]"
             >
               See my work
               <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -64,6 +90,7 @@ const facts = [
 
         <div>
           <img
+            data-reveal
             src={`${base}/PatrykPiasecki_cutout.png`}
             alt="Patryk Piasecki"
             width="900"
@@ -72,9 +99,9 @@ const facts = [
           />
           <dl class="border-t border-line">
             {
-              facts.map((fact) => (
-                <div class="border-b border-line py-4">
-                  <dt class="mb-1.5 text-xs uppercase tracking-[0.06em] text-faint">
+              facts.map((fact, i) => (
+                <div data-reveal style={`--reveal-delay: ${i * 60}ms`} class="border-b border-line py-4">
+                  <dt class="mb-1.5 text-xs uppercase tracking-[0.08em] text-faint">
                     {fact.label}
                   </dt>
                   <dd class="font-display text-[17px] text-navy-950">{fact.value}</dd>

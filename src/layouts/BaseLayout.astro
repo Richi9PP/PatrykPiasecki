@@ -10,9 +10,12 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
+const pageTitle = title ? `${title} · ${SITE.name}` : SITE.title;
 const pageDescription = description ?? SITE.description;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : Astro.url.href;
 ---
 
 <!doctype html>
@@ -20,25 +23,62 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" href={`${base}/favicon.png`} />
+    <meta name="theme-color" content="#f7f7fa" />
+    <meta name="author" content={SITE.name} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="canonical" href={canonical} />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Piazzolla:ital,opsz,wght@0,8..30,400;0,8..30,500;0,8..30,600;0,8..30,700;1,8..30,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body class="min-h-screen overflow-x-hidden">
+    <a
+      href="#main"
+      class="sr-only rounded-[2px] bg-navy-950 px-4 py-2 text-sm font-medium text-surface focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
+    >
+      Skip to content
+    </a>
     <Nav />
-    <main>
+    <main id="main">
       <slot />
     </main>
     <Footer />
+
+    <script>
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealTargets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+
+      if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+        revealTargets.forEach((el) => el.classList.add('is-revealed'));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -10% 0px' },
+        );
+        revealTargets.forEach((el) => observer.observe(el));
+      }
+    </script>
   </body>
 </html>

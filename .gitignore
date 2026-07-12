@@ -23,3 +23,9 @@ Thumbs.db
 # python / tooling scratch used to prepare assets
 __pycache__/
 .venv/
+
+# personal application documents — contain personal data, never publish to a public repo
+# (site assets live in public/ and src/, so nothing at repo root needs tracking)
+/*.pdf
+/*.docx
+/*.doc
