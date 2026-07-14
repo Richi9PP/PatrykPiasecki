@@ -23,9 +23,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Install, build, and upload your site
         uses: withastro/action@v3
-        # If deploying to https://<user>.github.io/<repo>/, uncomment and set:
-        # env:
-        #   BASE: /<repo>
 
   deploy:
     needs: build
