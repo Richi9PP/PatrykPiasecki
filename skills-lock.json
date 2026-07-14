@@ -25,6 +25,12 @@
       "skillPath": "skills/improve-animations/SKILL.md",
       "computedHash": "ff9991a8d6dabb24411daaf6de570e3b6826323459d514d90d7f6371bbdbdbe1"
     },
+    "linkedin-profile-optimizer": {
+      "source": "paramchoudhary/resumeskills",
+      "sourceType": "github",
+      "skillPath": "skills/linkedin-profile-optimizer/SKILL.md",
+      "computedHash": "fb2aaf9ce1a1bcae1fd44f3d04db9a76eb98394a017ffdcd4ca4b8d947efdc29"
+    },
     "review-animations": {
       "source": "emilkowalski/skill",
       "sourceType": "github",
