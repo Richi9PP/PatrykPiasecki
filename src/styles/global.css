@@ -125,7 +125,7 @@
   transition: opacity 220ms var(--ease-out-strong), transform 220ms var(--ease-out-strong);
   transition-delay: 0ms;
 }
-#mobile-menu.grid-rows-\[1fr\] li {
+#mobile-menu.is-open li {
   opacity: 1;
   transform: translateY(0);
 }
@@ -141,13 +141,28 @@
 */
 @layer components {
   /* thin blueprint grid confined behind the portrait, faded at its own edges */
-  .hero-grid-backdrop {
+  .hero-grid-backdrop,
+  .hero-grid-portrait {
     background-image:
       linear-gradient(var(--color-line) 1px, transparent 1px),
       linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  }
+  .hero-grid-backdrop {
     background-size: 40px 40px;
     -webkit-mask-image: radial-gradient(ellipse 70% 68% at 58% 46%, black 30%, transparent 78%);
     mask-image: radial-gradient(ellipse 70% 68% at 58% 46%, black 30%, transparent 78%);
+  }
+
+  /*
+    Mobile counterpart: the desktop backdrop is a wide band anchored to the right
+    of the hero, which has nothing to sit behind once the portrait centres and
+    shrinks. This one is scoped to the portrait box itself — tighter cells so the
+    grid still reads at 240px, and the fade centred on the portrait, not offset.
+  */
+  .hero-grid-portrait {
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 58% 54% at 50% 42%, black 24%, transparent 74%);
+    mask-image: radial-gradient(ellipse 58% 54% at 50% 42%, black 24%, transparent 74%);
   }
 
   .hero-dotgrid {
@@ -167,6 +182,55 @@
     filter: drop-shadow(0 10px 22px oklch(0.2 0.045 258 / 0.08));
     -webkit-mask-image: linear-gradient(to bottom, black 84%, oklch(0 0 0 / 0.55) 93%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 84%, oklch(0 0 0 / 0.55) 93%, transparent 100%);
+  }
+
+  /*
+    "Working with" ticker. The track holds two identical copies of the stack and
+    slides left by exactly 50% — one full copy — so the loop is seamless. Each
+    copy carries a pr matching its own gap-x, otherwise the seam between copy two
+    and copy one would be a gap short and the rhythm would stutter once per lap.
+  */
+  /*
+    Clipping lives here rather than on an `overflow-hidden` utility: utilities
+    outrank @layer components, so a utility would win over the reduced-motion
+    override below and leave that strip clipped with no way to reach the rest.
+  */
+  .marquee {
+    overflow: hidden;
+  }
+  .marquee-track {
+    animation: marquee 46s linear infinite;
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  /* let a reader stop the strip to actually read a name */
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+  /* names dissolve at both edges instead of being chopped by the overflow box */
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+  }
+  /*
+    The global reduced-motion rule only forces animation-duration, which would
+    freeze the track mid-slide at translateX(-50%). Drop the animation outright
+    and hand the strip back to the user as a normal scroller.
+  */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation-name: none;
+    }
+    .marquee {
+      overflow-x: auto;
+    }
   }
 
   .scroll-cue-arrow {

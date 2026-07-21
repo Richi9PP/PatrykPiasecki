@@ -28,7 +28,7 @@ const channels = [
 <BaseLayout title="Contact" description="Get in touch with Patryk Piasecki — email, LinkedIn, GitHub.">
   <section class="py-16 sm:py-24">
     <div class="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-16">
-      <div class="grid grid-cols-1 gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] md:gap-20">
         <div data-reveal>
           <p class="mb-3 text-[13px] font-medium tracking-[0.02em] text-navy-500">Contact</p>
           <h1 class="mb-6 font-display text-[length:var(--text-h2)] font-medium leading-[1.08] tracking-[-0.01em] text-navy-950">
@@ -50,12 +50,12 @@ const channels = [
                 rel={c.href.startsWith('http') ? 'noopener' : undefined}
                 data-reveal
                 style={`--reveal-delay: ${i * 70}ms`}
-                class="group grid grid-cols-1 gap-2 border-t border-line py-8 transition-colors last:border-b hover:bg-surface-alt sm:grid-cols-[140px_1fr] sm:items-center sm:gap-8"
+                class="group grid grid-cols-1 gap-2 border-t border-line py-8 transition-colors last:border-b hover:bg-surface-alt sm:grid-cols-[140px_minmax(0,1fr)] sm:items-center sm:gap-8"
               >
                 <span class="text-xs uppercase tracking-[0.08em] text-faint">{c.label}</span>
                 <div class="flex items-center justify-between gap-4">
                   <div>
-                    <div class="whitespace-nowrap font-display text-[length:var(--text-h3)] font-medium text-navy-950">
+                    <div class="break-words font-display text-[length:var(--text-h3)] font-medium text-navy-950 sm:whitespace-nowrap">
                       {c.value}
                     </div>
                     <div class="mt-1 text-sm text-muted">{c.note}</div>

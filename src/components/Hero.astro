@@ -1,20 +1,32 @@
 ---
 import { SITE } from '../consts';
+import StackStrip from './StackStrip.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<section class="relative grid min-h-[calc(100svh-90px)] grid-cols-1 overflow-hidden md:grid-cols-[28px_1fr]">
-  <!-- vertical rail label -->
-  <div class="hidden items-end justify-center py-12 md:flex">
-    <span
-      class="whitespace-nowrap text-xs uppercase tracking-[0.12em] text-faint [writing-mode:vertical-rl] rotate-180"
-    >
-      {SITE.role} · {SITE.location.split(',')[0]}
-    </span>
-  </div>
+<!--
+  Column, not a grid: min-h stretches the hero to the viewport, so the copy takes
+  the slack (flex-1) and the ticker + meta row settle on the hero's bottom edge
+  instead of leaving ~240px of dead space under them on desktop. Ticker and meta
+  row sit outside the rail column so their bands run the full width of the screen.
+  On phones the copy is taller than min-h, so nothing stretches and the ticker
+  simply follows the hero as before.
+-->
+<section class="relative flex min-h-[calc(100svh-72px)] flex-col overflow-hidden md:min-h-[calc(100svh-104px)]">
+  <div class="grid flex-1 grid-cols-1 md:grid-cols-[28px_1fr]">
+    <!-- vertical rail label -->
+    <div class="hidden items-end justify-center py-12 md:flex">
+      <span
+        class="whitespace-nowrap text-xs uppercase tracking-[0.12em] text-faint [writing-mode:vertical-rl] rotate-180"
+      >
+        {SITE.role} · {SITE.location.split(',')[0]}
+      </span>
+    </div>
 
-  <div>
-    <div class="relative mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-2 px-5 py-6 sm:px-8 sm:py-12 md:grid-cols-[1.1fr_0.9fr] lg:px-16">
+    <!-- min-w-0 so the copy grid can shrink; mx-auto children need w-full or the
+         column's cross-axis auto margins collapse them to fit-content -->
+    <div class="flex min-w-0 flex-col">
+      <div class="relative mx-auto grid w-full max-w-[1240px] flex-1 grid-cols-1 content-start items-start gap-5 px-5 py-8 sm:px-8 sm:py-12 sm:gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:content-normal md:items-center md:gap-10 lg:px-16">
       <!-- confined blueprint grid behind the portrait -->
       <div
         class="hero-grid-backdrop pointer-events-none absolute inset-y-0 right-[-6%] left-auto z-0 hidden w-[58%] md:block"
@@ -22,7 +34,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       >
       </div>
 
-      <!-- copy -->
+      <!-- copy — first on mobile so it stacks above the portrait -->
       <div class="relative z-20">
         <h1
           data-reveal
@@ -59,14 +71,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
       </div>
 
-      <!-- portrait -->
+      <!-- portrait — behind copy on mobile, right column on desktop -->
       <div
         data-reveal
         style="--reveal-delay: 140ms"
-        class="relative z-10 mt-4 w-full max-w-[240px] justify-self-center self-end sm:mt-8 sm:max-w-[380px] md:-mt-12 md:-ml-12 md:max-w-[440px] md:justify-self-end"
+        class="relative z-10 w-full max-w-[min(90%,420px)] justify-self-center self-start sm:mt-4 sm:max-w-[min(65%,420px)] md:-mt-12 md:-ml-12 md:max-w-[440px] md:justify-self-end md:self-end"
       >
+        <div
+          class="hero-grid-portrait pointer-events-none absolute -inset-x-[22%] -top-[10%] bottom-[4%] z-0 md:hidden"
+          aria-hidden="true"
+        >
+        </div>
+
         <p
-          class="greeting-halo absolute top-[55%] left-[-8%] z-40 m-0 whitespace-nowrap font-display text-[clamp(23px,2.5vw,31px)] font-medium italic leading-tight tracking-[-0.01em] text-navy-950 md:left-[-22%]"
+          class="greeting-halo absolute top-[59%] left-[0%] z-40 m-0 whitespace-nowrap font-display text-[clamp(20px,5.2vw,31px)] font-medium italic leading-[0.96] tracking-[-0.01em] text-navy-950 sm:left-[-2%] md:left-[-22%]"
         >
           Hi, I'm <strong class="font-semibold not-italic text-navy-500">Patryk</strong>
         </p>
@@ -92,10 +110,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <span class="h-[7px] w-[7px] shrink-0 rounded-full bg-navy-500"></span>
           WBD — DTC Team
         </div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="mx-auto flex max-w-[1240px] items-center justify-between border-t border-line px-5 py-4 text-xs tracking-[0.04em] text-faint sm:px-8 sm:py-6 lg:px-16">
+  <StackStrip />
+
+  <!--
+    Scroll cue stays the last line of the hero, below the ticker. The pl matches
+    the rail column above it, so this row lines up with the headline rather than
+    sitting 28px to its left. No border-t: the ticker's own bottom rule is already
+    the line between them, and two would stack into a 2px seam.
+  -->
+  <div class="md:pl-[28px]">
+    <div
+      class="mx-auto flex w-full max-w-[1240px] items-center justify-between px-5 py-3 text-xs tracking-[0.04em] text-faint sm:px-8 sm:py-4 lg:px-16"
+    >
       <span>{SITE.location} · {new Date().getFullYear()}</span>
       <a href="#work" class="inline-flex items-center gap-2 transition-colors hover:text-ink">
         Scroll

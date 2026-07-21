@@ -15,7 +15,7 @@ const delay = Math.min(index - 1, 5) * 70;
   href={href}
   data-reveal
   style={`--reveal-delay: ${delay}ms`}
-  class="group grid grid-cols-1 items-center gap-4 border-t border-line py-8 transition-colors last:border-b hover:bg-surface-alt md:grid-cols-[64px_1fr_1.1fr] md:gap-8 md:py-12"
+  class="group grid grid-cols-1 items-center gap-5 border-t border-line py-8 transition-colors last:border-b hover:bg-surface-alt md:grid-cols-[64px_minmax(0,1fr)_minmax(0,1.1fr)] md:gap-8 md:py-12"
 >
   <span class="font-display text-[15px] italic text-faint">{num}</span>
 
@@ -34,10 +34,10 @@ const delay = Math.min(index - 1, 5) * 70;
     </div>
   </div>
 
-  <div class="flex items-center justify-between gap-6">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
     <p class="max-w-[34ch] text-sm leading-relaxed text-muted">{metric}</p>
     <span
-      class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line-strong transition-all group-hover:border-navy-950 group-hover:bg-navy-950"
+      class="flex h-9 w-9 shrink-0 items-center justify-center self-end rounded-full border border-line-strong transition-all group-hover:border-navy-950 group-hover:bg-navy-950 sm:self-auto"
     >
       <svg
         class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:stroke-surface"

@@ -6,9 +6,9 @@ const isActive = (href: string) =>
   pathname === base + href || pathname === base + href + '/';
 ---
 
-<header class="pt-6">
-  <div class="mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-16">
-    <div class="flex items-center justify-between border-b border-line pb-4">
+<header class="sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-sm">
+  <div class="relative mx-auto max-w-[1240px] px-5 sm:px-8 lg:px-16">
+    <div class="flex items-center justify-between py-4">
       <a href={`${base}/`} class="font-display text-xl font-semibold tracking-tight">
         {SITE.name.split(' ')[0]}<span class="text-navy-500">.</span>
       </a>
@@ -58,56 +58,151 @@ const isActive = (href: string) =>
         </span>
       </button>
     </div>
-
-    <!-- mobile menu panel: grid-rows trick animates height without layout thrash -->
-    <div
-      id="mobile-menu"
-      class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-300 ease-out sm:hidden"
-    >
-      <nav class="min-h-0">
-        <ul class="flex flex-col divide-y divide-line border-b border-line">
-          {
-            NAV.map((item) => (
-              <li>
-                <a
-                  href={`${base}${item.href}`}
-                  class:list={[
-                    'flex items-center py-3.5 font-display text-lg text-navy-950 transition-colors',
-                    isActive(item.href) ? 'text-navy-500' : 'hover:text-navy-500',
-                  ]}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))
-          }
-          <li>
-            <a
-              href={`${base}/contact`}
-              class="flex items-center justify-between py-3.5 font-display text-lg font-medium text-navy-500"
-            >
-              Let's talk
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 17L17 7M17 7H8M17 7V16"></path>
-              </svg>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
   </div>
 </header>
+
+<!--
+  Overlays live OUTSIDE <header> on purpose: the header has a backdrop-filter,
+  which captures the containing block and compositing layer of any positioned
+  descendant. A panel nested inside it painted behind #main no matter its
+  z-index. As top-level fixed elements with no filtered ancestor, the scrim and
+  panel stack cleanly above the page. --nav-h (set in the script) positions the
+  panel flush under the sticky header.
+-->
+<!-- scrim: a light dim + reliable click-to-close target. The blur itself is
+     applied to #main/footer (see body.nav-open below), NOT via backdrop-filter
+     here — a backdrop-filter sibling mis-composites over the panel in Chrome. -->
+<div id="nav-scrim" class="nav-scrim fixed inset-0 z-40 sm:hidden" aria-hidden="true"></div>
+
+<!-- mobile menu panel -->
+<div
+  id="mobile-menu"
+  class="menu-panel fixed inset-x-0 z-[45] sm:hidden"
+>
+  <nav class="border-b border-line bg-surface shadow-[0_16px_32px_oklch(0.2_0.045_258/0.1)]">
+    <ul class="mx-auto flex max-w-[1240px] flex-col divide-y divide-line px-5 sm:px-8 lg:px-16">
+      {
+        NAV.map((item) => (
+          <li>
+            <a
+              href={`${base}${item.href}`}
+              class:list={[
+                'flex items-center py-3.5 font-display text-lg text-navy-950 transition-colors',
+                isActive(item.href) ? 'text-navy-500' : 'hover:text-navy-500',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a
+          href={`${base}/contact`}
+          class="flex items-center justify-between py-3.5 font-display text-lg font-medium text-navy-500"
+        >
+          Let's talk
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 17L17 7M17 7H8M17 7V16"></path>
+          </svg>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<style>
+  /* Enter is slower and uses a strong ease-out (the user is watching this
+     happen); exit is quicker since it's just clearing the way. Two rules
+     instead of one shared transition so each direction can have its own
+     timing/curve, matching the asymmetric-enter/exit pattern. */
+  .menu-panel {
+    top: var(--nav-h, 64px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 100ms ease-out,
+      visibility 0ms linear 120ms;
+  }
+
+  .menu-panel.is-open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition:
+      opacity 120ms ease-out,
+      visibility 0ms linear;
+  }
+
+  /* Scrim is only a faint dim + click-to-close target; the blur lives on
+     #main/footer below. No backdrop-filter here (it would composite over the
+     panel in Chrome). */
+  .nav-scrim {
+    opacity: 0;
+    visibility: hidden;
+    background: oklch(0.5 0.04 258 / 0.12);
+    transition:
+      opacity 120ms ease-out,
+      visibility 0ms linear 120ms;
+  }
+
+  .nav-scrim.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 150ms ease-out,
+      visibility 0ms linear;
+  }
+
+  /* The page (everything but the sticky header and the menu overlay) blurs
+     while the menu is open. The panel is a top-level fixed z-45 element, so it
+     paints above this filter layer instead of being trapped beneath it. */
+  :global(body.nav-open) :global(#main),
+  :global(body.nav-open) :global(footer) {
+    filter: blur(5px);
+    pointer-events: none;
+    transition: filter 150ms ease-out;
+  }
+
+  :global(body:not(.nav-open)) :global(#main),
+  :global(body:not(.nav-open)) :global(footer) {
+    transition: filter 120ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-panel {
+      transform: none;
+      transition: opacity 100ms ease-out, visibility 0ms linear 100ms;
+    }
+    .menu-panel.is-open {
+      transition: opacity 120ms ease-out, visibility 0ms linear;
+    }
+  }
+</style>
 
 <script>
   const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
+  const scrim = document.getElementById('nav-scrim');
+  const header = document.querySelector('header');
+
+  // Pin the panel flush under the sticky header, whatever its measured height.
+  const syncHeaderHeight = () => {
+    if (!header) return;
+    document.documentElement.style.setProperty('--nav-h', `${header.offsetHeight}px`);
+  };
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
 
   const setOpen = (open: boolean) => {
     if (!toggle || !menu) return;
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    menu.classList.toggle('grid-rows-[1fr]', open);
-    menu.classList.toggle('grid-rows-[0fr]', !open);
+    menu.classList.toggle('is-open', open);
+    scrim?.classList.toggle('is-open', open);
+    document.body.classList.toggle('nav-open', open);
+    document.body.classList.toggle('overflow-hidden', open);
   };
 
   toggle?.addEventListener('click', () => {
@@ -119,5 +214,13 @@ const isActive = (href: string) =>
     if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
       setOpen(false);
     }
+  });
+
+  // Close when tapping the blurred page behind the menu
+  document.addEventListener('click', (e) => {
+    if (toggle?.getAttribute('aria-expanded') !== 'true') return;
+    const target = e.target as Node;
+    if (menu?.contains(target) || toggle.contains(target)) return;
+    setOpen(false);
   });
 </script>

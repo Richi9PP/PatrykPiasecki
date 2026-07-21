@@ -1,12 +1,27 @@
 ---
 import { STACK } from '../consts';
+
+// The ticker needs two identical halves: the track slides by exactly one half,
+// so the second copy lands where the first started and the loop never shows a seam.
+const itemClass = 'shrink-0 whitespace-nowrap';
+const listClass =
+  'flex shrink-0 items-center gap-x-10 pr-10 font-display text-[16px] italic text-navy-700';
 ---
 
-<div class="border-y border-line py-6">
-  <div class="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-16 gap-y-4 px-5 sm:px-8 lg:px-16">
-    <span class="shrink-0 text-xs uppercase tracking-[0.12em] text-faint">Working with</span>
-    <div class="flex flex-wrap gap-x-12 gap-y-2 font-display text-[17px] italic text-navy-700">
-      {STACK.map((item) => <span>{item}</span>)}
+<!--
+  No visible label, so the strip runs edge to edge. The name of the thing lives on
+  the list itself instead — without it a screen reader gets twenty bare nouns and
+  no clue what they are.
+-->
+<div class="border-y border-line py-4 sm:py-5">
+  <div class="marquee marquee-mask">
+    <div class="marquee-track flex w-max">
+      <ul class={listClass} aria-label="Working with">
+        {STACK.map((item) => <li class={itemClass}>{item}</li>)}
+      </ul>
+      <ul class={listClass} aria-hidden="true">
+        {STACK.map((item) => <li class={itemClass}>{item}</li>)}
+      </ul>
     </div>
   </div>
 </div>

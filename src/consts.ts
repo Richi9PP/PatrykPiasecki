@@ -12,7 +12,6 @@ export const SITE = {
 export const NAV = [
   { label: 'Work', href: '/work' },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
 ] as const;
 
 // Static-site safe: no backend. Contact is mailto + external profiles.
@@ -22,12 +21,27 @@ export const CONTACT = {
   github: 'https://github.com/Richi9PP',
 } as const;
 
+// Ordered so the ticker alternates between modelling and delivery rather than
+// running all the data-science names together and then all the web ones.
 export const STACK = [
   'Python',
   'SQL',
+  'pandas',
   'scikit-learn',
-  'XGBoost',
-  'R',
   'Flask',
+  'XGBoost',
+  'NumPy',
+  'React',
+  'statsmodels',
+  'PyTorch',
+  'TypeScript',
+  'SHAP',
+  'SAS',
+  'Tailwind',
+  'R',
+  'Plotly',
+  'Socket.IO',
   'Power BI',
+  'Playwright',
+  'Supabase',
 ] as const;

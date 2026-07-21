@@ -17,6 +17,7 @@ node_modules/
 # agent skills (local tooling, not part of the site)
 .agents/
 .claude/
+.codex/
 
 # os / editor
 .DS_Store
